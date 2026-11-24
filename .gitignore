@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local config & data
+.env
+data/uploads/*
+!data/uploads/.gitkeep
+.pytest_cache/
+.ruff_cache/
+.idea/
+
+# 本地文档与 AI 协作说明（不入库）
+docs/
+CLAUDE.md
+.claude/

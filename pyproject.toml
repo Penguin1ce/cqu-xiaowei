@@ -1,0 +1,50 @@
+[project]
+name = "cqu-affairs"
+version = "0.1.0"
+description = "基于大语言模型智能体的校园事务智能办理系统"
+readme = "README.md"
+authors = [
+    { name = "Penguin1ce", email = "140684560+Penguin1ce@users.noreply.github.com" }
+]
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
+requires-python = ">=3.13"
+dependencies = [
+    "agentscope[vdb-milvus]>=2.0.12",
+    "alembic>=1.20.1",
+    "asyncmy>=0.2.18",
+    "fastapi>=0.165.0",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.16.3",
+    "pymilvus>=3.0.3",
+    "redis>=5",
+    "sqlalchemy[asyncio]>=2.1.9",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+cqu-affairs = "cqu_affairs:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+    "ruff>=0.17.6",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "BLE"]
