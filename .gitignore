@@ -17,6 +17,7 @@ data/uploads/*
 data/raw/*
 !data/raw/.gitkeep
 data/parsed/
+data/chunks/
 .pytest_cache/
 .ruff_cache/
 .idea/
