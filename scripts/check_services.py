@@ -1,6 +1,6 @@
 # Copyright (c) 2026 Penguin1ce <https://github.com/Penguin1ce>
 # SPDX-License-Identifier: AGPL-3.0-only
-"""连通性自检：依次检查 MySQL / Redis / Milvus 以及 DeepSeek / 通义 Embedding / 通义 Rerank。
+"""连通性自检：依次检查 MySQL / Redis / Milvus 以及 DeepSeek / 硅基流动 Embedding / Rerank。
 
 用法：
     uv run python scripts/check_services.py            # 全部检查
@@ -20,7 +20,7 @@ from agentscope.message import Msg, TextBlock
 
 from cqu_affairs.core.config import Settings, get_settings
 from cqu_affairs.infra import milvus, mysql, redis
-from cqu_affairs.llm import DashScopeReranker, build_chat_model, build_embedding_model
+from cqu_affairs.llm import SiliconFlowReranker, build_chat_model, build_embedding_model
 
 
 class Skip(Exception):
@@ -65,20 +65,20 @@ async def check_deepseek(s: Settings) -> str:
 
 
 async def check_embedding(s: Settings) -> str:
-    if s.dashscope.api_key is None:
-        raise Skip("DASHSCOPE_API_KEY 未配置")
-    model = build_embedding_model(s.dashscope)
+    if s.siliconflow.api_key is None:
+        raise Skip("SILICONFLOW_API_KEY 未配置")
+    model = build_embedding_model(s.siliconflow)
     resp = await model(["学生请假需要哪些材料？"])
     dim = len(resp.embeddings[0])
-    if dim != s.dashscope.embedding_dim:
-        raise RuntimeError(f"向量维度 {dim} 与配置 {s.dashscope.embedding_dim} 不一致")
-    return f"{s.dashscope.embedding_model}，维度 {dim}"
+    if dim != s.siliconflow.embedding_dim:
+        raise RuntimeError(f"向量维度 {dim} 与配置 {s.siliconflow.embedding_dim} 不一致")
+    return f"{s.siliconflow.embedding_model}，维度 {dim}"
 
 
 async def check_rerank(s: Settings) -> str:
-    if s.dashscope.api_key is None:
-        raise Skip("DASHSCOPE_API_KEY 未配置")
-    reranker = DashScopeReranker(s.dashscope)
+    if s.siliconflow.api_key is None:
+        raise Skip("SILICONFLOW_API_KEY 未配置")
+    reranker = SiliconFlowReranker(s.siliconflow)
     docs = ["食堂营业时间为早上六点半至晚上九点。", "学生请病假需提交医院诊断证明并经辅导员审批。"]
     try:
         results = await reranker.rerank("请病假要交什么材料", docs)
@@ -86,7 +86,7 @@ async def check_rerank(s: Settings) -> str:
         await reranker.aclose()
     if results[0].index != 1:
         raise RuntimeError(f"排序结果不符合预期：{results}")
-    return f"{s.dashscope.rerank_model}，最高分 {results[0].score:.3f}"
+    return f"{s.siliconflow.rerank_model}，最高分 {results[0].score:.3f}"
 
 
 INFRA_CHECKS: dict[str, Callable[[Settings], Awaitable[str]]] = {

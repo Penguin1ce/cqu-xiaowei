@@ -4,7 +4,7 @@
 
 ## 技术栈
 
-AgentScope · DeepSeek（对话）· 通义 Embedding / Rerank · FastAPI · MySQL · Redis · Milvus · Vue 3
+AgentScope · DeepSeek（对话）· 硅基流动 Embedding / Rerank · FastAPI · MySQL · Redis · Milvus · Vue 3
 
 ## 快速开始
 
@@ -14,7 +14,7 @@ AgentScope · DeepSeek（对话）· 通义 Embedding / Rerank · FastAPI · MyS
 # 1. 安装依赖
 uv sync
 
-# 2. 配置：复制模板并填写 DEEPSEEK_API_KEY、DASHSCOPE_API_KEY
+# 2. 配置：复制模板并填写 DEEPSEEK_API_KEY、SILICONFLOW_API_KEY
 cp .env.example .env
 
 # 3. 启动 MySQL / Redis / Milvus
