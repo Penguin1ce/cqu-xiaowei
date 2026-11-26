@@ -4,7 +4,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import BigInteger, DateTime, MetaData, func
+from sqlalchemy import BigInteger, DateTime, Integer, MetaData, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 # 统一约束命名，方便 Alembic 自动生成迁移时产生稳定的名字
@@ -21,8 +21,12 @@ class Base(DeclarativeBase):
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
 
 
+# SQLite（测试用）只有 INTEGER PRIMARY KEY 才自增；MySQL 仍为 BIGINT
+_ID_TYPE = BigInteger().with_variant(Integer, "sqlite")
+
+
 class IdMixin:
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(_ID_TYPE, primary_key=True, autoincrement=True)
 
 
 class TimestampMixin:

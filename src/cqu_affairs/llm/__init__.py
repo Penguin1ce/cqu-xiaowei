@@ -6,7 +6,14 @@
 """
 
 from cqu_affairs.llm.chat import build_chat_model
-from cqu_affairs.llm.embedding import build_embedding_model
+from cqu_affairs.llm.embedding import Embedder, build_embedder, build_embedding_model
 from cqu_affairs.llm.rerank import RerankResult, SiliconFlowReranker
 
-__all__ = ["RerankResult", "SiliconFlowReranker", "build_chat_model", "build_embedding_model"]
+__all__ = [
+    "Embedder",
+    "RerankResult",
+    "SiliconFlowReranker",
+    "build_chat_model",
+    "build_embedder",
+    "build_embedding_model",
+]

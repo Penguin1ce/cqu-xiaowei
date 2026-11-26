@@ -6,5 +6,6 @@
 """
 
 from cqu_affairs.models.base import Base, IdMixin, TimestampMixin
+from cqu_affairs.models.knowledge import KbChunk, KbDocument
 
-__all__ = ["Base", "IdMixin", "TimestampMixin"]
+__all__ = ["Base", "IdMixin", "KbChunk", "KbDocument", "TimestampMixin"]
