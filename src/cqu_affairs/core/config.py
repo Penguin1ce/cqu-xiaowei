@@ -11,6 +11,7 @@
     DEEPSEEK_*   DeepSeek 对话模型
     SILICONFLOW_* 硅基流动 Embedding / Rerank
     MINERU_      MinerU 文档解析
+    RAG_         知识库检索参数
 
 业务代码统一通过 `get_settings()` 获取配置，不要直接读环境变量。
 """
@@ -129,6 +130,23 @@ class MinerUSettings(_EnvSettings):
     timeout: float = 1800.0
 
 
+class RagSettings(_EnvSettings):
+    """知识库检索参数。阈值依据 2026-11-26 实测：可回答问题首条 Rerank 分数 0.585–1.0，
+    知识库外问题 0.000–0.071。"""
+
+    model_config = SettingsConfigDict(env_prefix="RAG_")
+
+    # 混合召回（稠密 + BM25 各取 recall_k，RRF 融合后保留 recall_k）
+    recall_k: int = 20
+    rrf_k: int = 60
+    # Rerank 后最多返回的条数
+    top_k: int = 5
+    # Rerank 分数低于该值视为不相关；一条都不剩时回答“未找到依据”
+    min_score: float = 0.3
+    # 送入 Rerank 的单块最大字数（大表格截断，控制费用）
+    rerank_max_chars: int = 2000
+
+
 class Settings:
     """聚合各分组配置。"""
 
@@ -140,6 +158,7 @@ class Settings:
         self.deepseek = DeepSeekSettings()
         self.siliconflow = SiliconFlowSettings()
         self.mineru = MinerUSettings()
+        self.rag = RagSettings()
 
 
 @lru_cache
