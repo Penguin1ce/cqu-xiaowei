@@ -49,6 +49,13 @@ def get_engine() -> AsyncEngine:
     return _engine
 
 
+def get_session_factory() -> async_sessionmaker[AsyncSession]:
+    """供服务层在请求之外自行开启会话（如检索、后台任务）。"""
+    if _session_factory is None:
+        raise RuntimeError("MySQL 未初始化，请先调用 init_mysql()")
+    return _session_factory
+
+
 async def get_session() -> AsyncIterator[AsyncSession]:
     """FastAPI 依赖：每个请求一个会话。事务边界由业务层显式 commit。"""
     if _session_factory is None:

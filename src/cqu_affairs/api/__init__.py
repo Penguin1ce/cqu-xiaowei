@@ -4,7 +4,8 @@
 
 from fastapi import APIRouter
 
-from cqu_affairs.api.routes import health
+from cqu_affairs.api.routes import health, qa
 
 api_router = APIRouter()
 api_router.include_router(health.router)
+api_router.include_router(qa.router)

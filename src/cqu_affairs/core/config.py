@@ -89,6 +89,9 @@ class DeepSeekSettings(_EnvSettings):
     api_key: SecretStr | None = None
     base_url: str = "https://api.deepseek.com"
     model: str = "deepseek-chat"
+    # deepseek-flash 等模型默认开启思考，问答场景关闭：首字从约 2s 降到约 0.35s
+    thinking: bool = False
+    temperature: float = 0.2
 
 
 class SiliconFlowSettings(_EnvSettings):
@@ -145,6 +148,10 @@ class RagSettings(_EnvSettings):
     min_score: float = 0.3
     # 送入 Rerank 的单块最大字数（大表格截断，控制费用）
     rerank_max_chars: int = 2000
+
+    # Redis 缓存：查询向量（与知识库版本无关）和完整回答（知识库重新入库后失效）
+    embedding_cache_ttl: int = 7 * 24 * 3600
+    answer_cache_ttl: int = 24 * 3600
 
 
 class Settings:

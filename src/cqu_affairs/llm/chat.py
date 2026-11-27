@@ -15,4 +15,7 @@ def build_chat_model(settings: DeepSeekSettings, *, stream: bool = True) -> Deep
         credential=DeepSeekCredential(api_key=settings.api_key, base_url=settings.base_url),
         model=settings.model,
         stream=stream,
+        parameters=DeepSeekChatModel.Parameters(
+            thinking_enable=settings.thinking, temperature=settings.temperature
+        ),
     )

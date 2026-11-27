@@ -77,8 +77,13 @@ class SearchHit(BaseModel):
     kind: str
     text: str
     status: str
+    level: str
+    """school / college。"""
+    issuer: str
     doc_no: str
     publish_date: date | None
+    supersedes: list[str]
+    """该文件明确废止的旧文件字号。"""
     pages: list[int]
     score: float | None
     """Rerank 分数（0–1）；Rerank 失败退回 RRF 时为 None。"""
@@ -190,8 +195,11 @@ class PolicyRetriever:
                 kind=chunk.kind,
                 text=chunk.text,
                 status=doc.status,
+                level=doc.level,
+                issuer=doc.issuer,
                 doc_no=doc.doc_no,
                 publish_date=doc.publish_date,
+                supersedes=list(doc.supersedes or []),
                 pages=list(chunk.pages),
                 score=score,
                 recall_rank=i + 1,

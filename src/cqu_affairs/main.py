@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from cqu_affairs.api import api_router
+from cqu_affairs.api.deps import close_qa_service
 from cqu_affairs.core.config import get_settings
 from cqu_affairs.core.logging import setup_logging
 from cqu_affairs.infra.milvus import close_milvus, init_milvus
@@ -29,6 +30,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     try:
         yield
     finally:
+        await close_qa_service()
         await close_milvus()
         await close_redis()
         await close_mysql()
